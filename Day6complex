@@ -1,0 +1,57 @@
+import re
+import copy
+
+
+    
+def print_grid(grid):
+    for row in grid:
+        print("".join(row))
+    print("\n")
+
+
+file_path = "Day6pt1.txt"
+grid = []
+
+
+with open(file_path, 'r') as file:
+    for line in file:
+        grid.append(list(line.strip()))
+
+complex_grid = {(i+k*1j):grid[k][i] for k in range(len(grid)) for i in range(len(grid[0]))}
+
+for key in complex_grid:
+    if complex_grid[key] == "^":
+        starting_position = key
+        break
+
+starting_direction = -1j
+
+def path(grid,position, direction):
+    
+    visited = set()
+    path=[]
+    while position in grid:
+        if (position,direction) in visited:
+            return path,-1
+        if grid.get(position+direction) == "#":
+            direction *= 1j
+        else:
+            visited.add((position,direction))
+            position += direction
+    path = {p for p,_ in visited}
+    return path, len(path)
+
+print(path(complex_grid,starting_position,starting_direction)[1])
+original_path = path(complex_grid,starting_position,starting_direction)[0]
+original_path.remove(starting_position)
+loop_count = 0
+for p in original_path:
+    copy_grid = copy.deepcopy(complex_grid)
+    copy_grid[p] = "#"
+    if path(copy_grid,starting_position,starting_direction)[1]==-1:
+        loop_count+=1
+print(loop_count)
+
+
+
+
