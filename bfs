@@ -1,0 +1,7 @@
+tree = {1:{2:{4:{}},3:{5:{},6:{}}}}
+def bfs(q):
+    while q:
+        k,v = zip(*q)
+        print(*k)
+        q = [x for o in v for x in o.items()]
+bfs(tree.items())
