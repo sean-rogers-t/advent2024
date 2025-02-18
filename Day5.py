@@ -28,4 +28,3 @@ for update in updates:
     if valid == True:
         middle_sum += update[len(update)//2]
 print(middle_sum)
-
